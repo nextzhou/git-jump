@@ -1,0 +1,12 @@
+# Ignore all dot-files and dot-directories
+.*
+
+# Exceptions: dot-files managed by git
+!.gitignore
+!.github
+
+# Rust
+/target/
+
+# OS
+Thumbs.db

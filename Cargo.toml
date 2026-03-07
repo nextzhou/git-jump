@@ -1,0 +1,30 @@
+[package]
+name = "git-jump"
+version = "1.0.0"
+edition = "2024"
+description = "A CLI tool to quickly jump between Git projects with auto environment setup"
+license = "MIT"
+repository = "https://github.com/nextzhou/git-jump"
+homepage = "https://github.com/nextzhou/git-jump"
+rust-version = "1.85"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+dirs = "6"
+glob = "0.3"
+dialoguer = "0.12"
+crossterm = "0.29"
+ratatui = "0.30"
+webbrowser = "1"
+figlet-rs = "0.1"
+
+[dev-dependencies]
+assert_cmd = "2"
+dirs = "6"
+tempfile = "3"
+
+[profile.release]
+lto = true
+strip = true
