@@ -509,6 +509,20 @@ mod tests {
             .current_dir(&repo)
             .output()
             .unwrap();
+        Command::new("git")
+            .args([
+                "-C",
+                &repo.to_string_lossy(),
+                "config",
+                "user.email",
+                "test@test.com",
+            ])
+            .output()
+            .unwrap();
+        Command::new("git")
+            .args(["-C", &repo.to_string_lossy(), "config", "user.name", "Test"])
+            .output()
+            .unwrap();
         // Create an initial commit so HEAD is valid
         Command::new("git")
             .args([
@@ -534,6 +548,20 @@ mod tests {
         Command::new("git")
             .args(["init", "--initial-branch=main"])
             .current_dir(&repo)
+            .output()
+            .unwrap();
+        Command::new("git")
+            .args([
+                "-C",
+                &repo.to_string_lossy(),
+                "config",
+                "user.email",
+                "test@test.com",
+            ])
+            .output()
+            .unwrap();
+        Command::new("git")
+            .args(["-C", &repo.to_string_lossy(), "config", "user.name", "Test"])
             .output()
             .unwrap();
         Command::new("git")
