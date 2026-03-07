@@ -1,5 +1,9 @@
 # gj (git-jump)
 
+[![CI](https://img.shields.io/github/actions/workflow/status/nextzhou/git-jump/ci.yml?branch=main&style=flat-square&logo=github&label=CI)](https://github.com/nextzhou/git-jump/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/nextzhou/git-jump?style=flat-square&logo=github)](https://github.com/nextzhou/git-jump/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+
 A CLI tool to quickly jump between local Git projects with automatic environment setup.
 
 Type `gj <pattern>` to fuzzy-match and jump to a project. On entry, git config, environment
@@ -35,7 +39,7 @@ Place the `git-jump` binary somewhere on your `$PATH`.
 
 ### From Source
 
-Requires Rust 1.85+:
+Requires Rust 1.86+:
 
 ```bash
 cargo install --git https://github.com/nextzhou/git-jump
@@ -59,12 +63,25 @@ git-jump setup
 This configures your project root directory (e.g. `~/code`) and writes shell integration to your
 rc file automatically.
 
+The global config is written to `~/.config/git-jump/config.toml`. You can edit it later to set a
+custom browser command or default logo text (see [docs/configuration.md](docs/configuration.md)).
+
 **Step 2**: Reload your shell (or open a new terminal).
 
-**Step 3**: Jump to a project:
+**Step 3**: Clone a project into the organized directory structure:
 
 ```bash
-gj api              # match by name across all domains
+gjclone https://github.com/org/repo
+```
+
+On the first clone under a new domain, `gj` auto-generates a domain config template at
+`$root/<domain>/.git-jump.toml` with sensible defaults (web URL template, git identity
+placeholders, etc.). Review and customize it for your environment.
+
+**Step 4**: Jump to a project:
+
+```bash
+gj repo             # match by name across all domains
 gj api gate         # multi-token AND match
 gj                  # open interactive selector
 ```

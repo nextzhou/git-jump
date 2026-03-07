@@ -54,8 +54,8 @@ gj/
 +-- docs/
 |   +-- configuration.md  # Configuration reference: fields, merge rules, aliases, URL templates
 |   +-- usage.md          # Usage guide: jump, clone, browse, debug commands
-+-- Cargo.toml            # Edition 2024, MSRV 1.85, deps: clap/serde/toml/dirs/glob/dialoguer/crossterm/ratatui/figlet-rs
-+-- clippy.toml           # MSRV 1.85
++-- Cargo.toml            # Edition 2024, MSRV 1.86, deps: clap/serde/toml/dirs/glob/dialoguer/crossterm/ratatui/figlet-rs
++-- clippy.toml           # MSRV 1.86
 +-- rustfmt.toml          # max_width=100, field_init_shorthand
 +-- lefthook.yml          # Pre-commit: fmt+clippy+shellcheck+shfmt; commit-msg: Conventional Commits
 +-- .github/
@@ -155,7 +155,7 @@ Uses clap derive API:
 ## Conventions
 
 ### Rust
-- **Rust edition 2024**, MSRV 1.85
+- **Rust edition 2024**, MSRV 1.86
 - **rustfmt**: max_width=100, use_field_init_shorthand=true
 - **clippy**: `-D warnings` (zero warnings policy)
 - Integration tests in `tests/` using `assert_cmd` + `tempfile`; unit tests as `#[cfg(test)]` modules
