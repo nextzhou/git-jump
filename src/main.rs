@@ -22,7 +22,7 @@ use clap::{Parser, Subcommand};
 #[command(
     name = "git-jump",
     about = "Quickly jump between Git projects",
-    version,
+    version = env!("GJ_VERSION"),
     subcommand_required = true
 )]
 struct Cli {
