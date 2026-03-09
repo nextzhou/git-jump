@@ -11,6 +11,13 @@ pre-commit:
     shfmt:
       glob: "shell/*.{sh,bash}"
       run: shfmt -d -i 2 -ci -bn {staged_files}
+    cargo-lock-sync:
+      run: |
+        if ! git diff --quiet Cargo.lock 2>/dev/null; then
+          echo "Error: Cargo.lock has unstaged changes."
+          echo "Stage it with: git add Cargo.lock"
+          exit 1
+        fi
 
 commit-msg:
   commands:
