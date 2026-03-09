@@ -152,7 +152,7 @@ in mind.
 ## Clone and Jump (`gjclone`)
 
 ```
-gjclone <url>
+gjclone <url> [args...]
 ```
 
 `gjclone` is a shell function (not a binary subcommand) that:
@@ -178,6 +178,27 @@ gjclone git@gitlab.com:my-org/my-repo.git
 
 The URL is parsed to extract the domain, group path, and project name. The repository is cloned
 to `$root/<domain>/<groups>/<project>`.
+
+### Passing Extra Arguments to git clone
+
+Any arguments after the URL are passed through directly to `git clone`:
+
+```bash
+# Shallow clone
+gjclone https://github.com/my-org/my-repo --depth 1
+
+# Clone specific branch
+gjclone https://github.com/my-org/my-repo --branch develop
+
+# Combined options
+gjclone https://github.com/my-org/my-repo --depth 1 --single-branch --branch main
+```
+
+When using `git-jump` directly, the `--debug` flag must come before the subcommand:
+
+```bash
+git-jump --debug clone https://github.com/my-org/my-repo --depth 1
+```
 
 ### Auto-Generated Domain Config
 
@@ -335,10 +356,10 @@ Note: `gj --debug` does not work directly because `gj` is a shell function that 
 |------------------------------------------|----------------------------------------------------------|
 | `gj [pattern...]`                        | Jump to matching project (shell function)                |
 | `gj .`                                   | Jump to current git project root and load config         |
-| `gjclone <url>`                          | Clone repo into organized structure and jump             |
+| `gjclone <url> [args...]`                | Clone repo into organized structure and jump; extra args passed to git clone |
 | `git-jump jump [pattern...]`             | Jump (binary subcommand, used by `gj` shell function)    |
 | `git-jump browse [pattern...]`           | Open project web page in browser                         |
-| `git-jump clone <url>`                   | Clone repo and print target path (used by `gjclone`)     |
+| `git-jump clone <url> [args...]`         | Clone repo and print target path; extra args passed to git clone |
 | `git-jump setup`                         | Interactive first-time configuration wizard              |
 | `git-jump init [shell]`                  | Output shell integration script for bash/zsh/fish        |
 | `git-jump completions <shell> [partial]` | Generate tab completion candidates                       |

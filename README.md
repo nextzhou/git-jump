@@ -146,7 +146,7 @@ alias behavior, and URL template variables.
 |---------|-------------|
 | `gj <pattern...>` | Jump to matching project |
 | `gj .` | Jump to current git project root and load config |
-| `gjclone <url>` | Clone repo into organized structure and jump (shell function) |
+| `gjclone <url> [args...]` | Clone repo into organized structure and jump; extra args passed to git clone |
 | `git-jump browse [pattern...]` | Open project web page in browser |
 | `git-jump setup` | Interactive first-time configuration wizard |
 | `git-jump init [shell]` | Output shell integration script |

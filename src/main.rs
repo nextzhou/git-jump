@@ -42,9 +42,13 @@ enum Commands {
         pattern: Vec<String>,
     },
     /// Clone a Git repository into the organized directory structure
+    #[command(trailing_var_arg = true)]
     Clone {
         /// Repository URL or group/project shorthand
         repo: String,
+        /// Extra arguments passed to git clone
+        #[arg(allow_hyphen_values = true)]
+        extra_args: Vec<String>,
     },
     /// Output shell integration script
     Init {
@@ -117,10 +121,10 @@ fn run(command: Commands, dbg: &mut debug::DebugLog) -> error::Result<()> {
             print!("{script}");
             Ok(())
         }
-        Commands::Clone { repo } => {
+        Commands::Clone { repo, extra_args } => {
             require_setup()?;
             let global = config::load_global_config()?;
-            let output = clone::run(&repo, &global, dbg)?;
+            let output = clone::run(&repo, &extra_args, &global, dbg)?;
             println!("{output}");
             Ok(())
         }

@@ -6,7 +6,12 @@ use crate::config::{self, GlobalConfig};
 use crate::debug::{self, DebugLog};
 use crate::error::{Error, Result};
 
-pub fn run(repo: &str, global: &GlobalConfig, dbg: &mut DebugLog) -> Result<String> {
+pub fn run(
+    repo: &str,
+    extra_args: &[String],
+    global: &GlobalConfig,
+    dbg: &mut DebugLog,
+) -> Result<String> {
     let root = config::resolve_root(global)?;
 
     let known_domains = config::load_known_domains()?;
@@ -21,6 +26,10 @@ pub fn run(repo: &str, global: &GlobalConfig, dbg: &mut DebugLog) -> Result<Stri
             parsed.groups.join(", "),
             parsed.project,
         ));
+    }
+
+    if dbg.is_enabled() && !extra_args.is_empty() {
+        dbg.log(&format!("extra args: {}", extra_args.join(" ")));
     }
 
     let target_dir = build_target_dir(&root, &parsed);
@@ -48,7 +57,9 @@ pub fn run(repo: &str, global: &GlobalConfig, dbg: &mut DebugLog) -> Result<Stri
 
         let t_clone = Instant::now();
         let status = Command::new("git")
-            .args(["clone", repo, &target_dir.to_string_lossy()])
+            .arg("clone")
+            .args(extra_args)
+            .args([repo, &target_dir.to_string_lossy()])
             .stdout(Stdio::null())
             .stderr(Stdio::inherit())
             .status()?;

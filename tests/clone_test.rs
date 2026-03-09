@@ -274,3 +274,93 @@ fn test_clone_domain_config_bitbucket() {
         "bitbucket config should have uncommented web_url_template"
     );
 }
+
+#[test]
+fn test_clone_extra_args_in_debug_output() {
+    let tmp = setup_project_root();
+
+    let mut cmd = cargo_bin_cmd!("git-jump");
+    let output = cmd
+        .args([
+            "--debug",
+            "clone",
+            "https://example.com/team/project-alpha",
+            "--depth",
+            "1",
+            "--single-branch",
+        ])
+        .env("_GIT_JUMP_ROOT", tmp.path())
+        .env("XDG_CONFIG_HOME", tmp.path().join(".config"))
+        .env("NO_COLOR", "1")
+        .output()
+        .unwrap();
+
+    assert!(output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("extra args: --depth 1 --single-branch"),
+        "debug output should contain extra args, got: {stderr}"
+    );
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let path = stdout.trim();
+    assert!(
+        path.ends_with("example.com/team/project-alpha"),
+        "stdout should still contain target path, got: {path}"
+    );
+}
+
+#[test]
+fn test_clone_extra_args_with_values() {
+    let tmp = setup_project_root();
+
+    let mut cmd = cargo_bin_cmd!("git-jump");
+    let output = cmd
+        .args([
+            "--debug",
+            "clone",
+            "https://example.com/team/project-alpha",
+            "--branch",
+            "main",
+            "--depth",
+            "1",
+        ])
+        .env("_GIT_JUMP_ROOT", tmp.path())
+        .env("XDG_CONFIG_HOME", tmp.path().join(".config"))
+        .env("NO_COLOR", "1")
+        .output()
+        .unwrap();
+
+    assert!(output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("extra args: --branch main --depth 1"),
+        "debug output should preserve arg order and values, got: {stderr}"
+    );
+}
+
+#[test]
+fn test_clone_no_extra_args_backward_compatible() {
+    let tmp = setup_project_root();
+
+    let mut cmd = cargo_bin_cmd!("git-jump");
+    let output = cmd
+        .args(["--debug", "clone", "https://example.com/team/project-alpha"])
+        .env("_GIT_JUMP_ROOT", tmp.path())
+        .env("XDG_CONFIG_HOME", tmp.path().join(".config"))
+        .env("NO_COLOR", "1")
+        .output()
+        .unwrap();
+
+    assert!(output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        !stderr.contains("extra args:"),
+        "debug output should NOT contain extra args line when none provided, got: {stderr}"
+    );
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let path = stdout.trim();
+    assert!(
+        path.ends_with("example.com/team/project-alpha"),
+        "stdout should contain target path, got: {path}"
+    );
+}
