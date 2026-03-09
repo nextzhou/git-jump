@@ -2,7 +2,7 @@
 
 ## Development Setup
 
-Requires Rust 1.85+.
+Requires Rust 1.86+.
 
 ```bash
 git clone https://github.com/nextzhou/git-jump
